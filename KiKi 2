@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KiKi's Study Hub — NIC Esthetics Exam Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+–bg: #0f0e17;
+–card: rgba(255,255,255,0.04);
+–gold: #d4a053;
+–maroon: #b03052;
+–maroon-light: #e94560;
+–text: #f0e6d3;
+–text-dim: rgba(240,230,211,0.6);
+–green: #4ade80;
+–red: #f87171;
+}
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background: linear-gradient(170deg, var(–bg) 0%, #1a1528 50%, var(–bg) 100%);
+color: var(–text);
+min-height: 100vh;
+-webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: 540px; margin: 0 auto; padding: 0 20px 60px; }
+
+/* ── HEADER ── */
+.header {
+text-align: center;
+padding: 32px 20px 18px;
+border-bottom: 1px solid rgba(212,160,83,0.15);
+margin-bottom: 24px;
+}
+.header .tag {
+font-size: 11px; letter-spacing: 3px; color: var(–gold);
+text-transform: uppercase; font-weight: 600; margin-bottom: 8px;
+}
+.header h1 {
+font-family: ‘DM Serif Display’, serif;
+font-size: 28px; color: var(–text); font-weight: 400;
+}
+.header .sub { color: var(–text-dim); font-size: 13px; margin-top: 6px; }
+
+/* ── BUTTONS ── */
+.btn-primary {
+width: 100%; padding: 16px; border: none; border-radius: 14px;
+background: linear-gradient(135deg, var(–maroon), var(–maroon-light));
+color: #fff; font-size: 17px; font-weight: 700; cursor: pointer;
+box-shadow: 0 4px 24px rgba(233,69,96,0.3); letter-spacing: 0.5px;
+font-family: ‘DM Sans’, sans-serif; transition: transform 0.15s;
+}
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+padding: 14px; border-radius: 14px; font-size: 15px; font-weight: 600;
+cursor: pointer; font-family: ‘DM Sans’, sans-serif;
+background: var(–card); border: 1.5px solid rgba(212,160,83,0.3);
+color: var(–gold); transition: transform 0.15s;
+}
+.btn-secondary:active { transform: scale(0.98); }
+
+/* ── CHAPTER SELECT ── */
+.chapter-btn {
+display: flex; align-items: center; justify-content: space-between;
+width: 100%; padding: 16px 18px; margin-bottom: 10px;
+background: var(–card); border: 1.5px solid rgba(255,255,255,0.06);
+border-radius: 14px; color: var(–text); font-size: 15px;
+cursor: pointer; transition: all 0.2s; text-align: left;
+font-family: ‘DM Sans’, sans-serif;
+}
+.chapter-btn:hover { border-color: rgba(212,160,83,0.3); }
+.chapter-btn.active {
+background: rgba(212,160,83,0.1);
+border-color: var(–gold); color: var(–gold); font-weight: 600;
+}
+.chapter-btn .count { font-size: 12px; color: var(–text-dim); }
+
+.select-all {
+display: block; width: 100%; padding: 10px; margin: 4px 0 24px;
+background: none; border: none; color: var(–gold);
+font-size: 13px; font-weight: 600; cursor: pointer;
+text-decoration: underline; text-underline-offset: 3px;
+font-family: ‘DM Sans’, sans-serif;
+}
+
+/* ── COUNT PILLS ── */
+.count-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+.count-pill {
+padding: 10px 20px; border-radius: 10px; font-size: 14px;
+border: 1.5px solid rgba(255,255,255,0.08); background: var(–card);
+color: var(–text); cursor: pointer; font-family: ‘DM Sans’, sans-serif;
+transition: all 0.2s;
+}
+.count-pill.active {
+border-color: var(–maroon-light); background: rgba(233,69,96,0.15);
+color: var(–maroon-light); font-weight: 600;
+}
+.count-pill:disabled { color: rgba(255,255,255,0.2); cursor: default; }
+
+/* ── QUIZ ── */
+.topbar {
+padding: 16px 0; display: flex; justify-content: space-between;
+align-items: center; font-size: 13px;
+}
+.topbar .exit { background: none; border: none; color: var(–gold); font-size: 13px; cursor: pointer; font-weight: 600; font-family: ‘DM Sans’, sans-serif; }
+.topbar .tally span:first-child { color: var(–green); }
+.topbar .tally .sep { margin: 0 6px; color: rgba(255,255,255,0.15); }
+.topbar .tally span:last-child { color: var(–red); }
+
+.progress-track { height: 3px; background: rgba(255,255,255,0.06); border-radius: 3px; }
+.progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(–gold), var(–maroon-light)); transition: width 0.4s ease; }
+
+.chapter-tag {
+text-align: center; padding: 16px 0 0;
+font-size: 10px; letter-spacing: 2px; color: var(–gold);
+text-transform: uppercase; font-weight: 600;
+}
+
+.question-card {
+background: var(–card); border: 1px solid rgba(255,255,255,0.06);
+border-radius: 16px; padding: 24px 20px; margin: 12px 0 16px;
+}
+.question-card p { font-size: 16px; line-height: 1.6; font-weight: 500; }
+
+.options { display: flex; flex-direction: column; gap: 8px; }
+.option-btn {
+padding: 14px 18px; background: var(–card);
+border: 1.5px solid rgba(255,255,255,0.06); border-radius: 12px;
+color: var(–text); font-size: 14px; text-align: left;
+cursor: pointer; transition: all 0.2s; line-height: 1.5;
+font-family: ‘DM Sans’, sans-serif;
+}
+.option-btn:hover:not(:disabled) { background: rgba(255,255,255,0.08); border-color: rgba(233,69,96,0.4); }
+.option-btn:disabled { cursor: default; }
+.option-btn.correct {
+background: rgba(74,222,128,0.12); border-color: rgba(74,222,128,0.5);
+color: var(–green); font-weight: 600;
+}
+.option-btn.wrong {
+background: rgba(248,113,113,0.12); border-color: rgba(248,113,113,0.5);
+color: var(–red);
+}
+
+.explanation {
+margin-top: 14px; padding: 14px 16px;
+background: rgba(212,160,83,0.06); border: 1px solid rgba(212,160,83,0.15);
+border-radius: 12px; font-size: 13px; line-height: 1.6; color: var(–text-dim);
+}
+
+/* ── RESULTS ── */
+.score-card {
+background: var(–card); border-radius: 18px;
+padding: 32px 24px; text-align: center; margin-bottom: 24px;
+}
+.score-card.pass { border: 1.5px solid rgba(74,222,128,0.3); }
+.score-card.fail { border: 1.5px solid rgba(248,113,113,0.3); }
+.score-pct {
+font-size: 56px; font-family: ‘DM Serif Display’, serif; line-height: 1;
+}
+.score-pct.pass { color: var(–green); }
+.score-pct.fail { color: var(–red); }
+.score-detail { font-size: 14px; color: var(–text-dim); margin-top: 8px; }
+.badge {
+display: inline-block; margin-top: 14px; padding: 6px 18px;
+border-radius: 20px; font-size: 12px; font-weight: 700;
+letter-spacing: 1.5px; text-transform: uppercase;
+}
+.badge.pass { background: rgba(74,222,128,0.12); color: var(–green); border: 1px solid rgba(74,222,128,0.3); }
+.badge.fail { background: rgba(248,113,113,0.12); color: var(–red); border: 1px solid rgba(248,113,113,0.3); }
+.nic-note { font-size: 11px; color: var(–text-dim); margin-top: 8px; }
+
+.review-title {
+font-family: ‘DM Serif Display’, serif;
+font-size: 18px; color: var(–gold); margin-bottom: 14px; font-weight: 400;
+}
+.missed-card {
+background: var(–card); border: 1px solid rgba(255,255,255,0.06);
+border-radius: 14px; padding: 16px 18px; margin-bottom: 10px;
+}
+.missed-card .ch-label { font-size: 10px; letter-spacing: 1.5px; color: var(–text-dim); text-transform: uppercase; margin-bottom: 6px; }
+.missed-card .mq { font-size: 14px; line-height: 1.5; margin-bottom: 10px; }
+.missed-card .your { font-size: 13px; color: var(–red); margin-bottom: 4px; }
+.missed-card .correct { font-size: 13px; color: var(–green); margin-bottom: 6px; }
+.missed-card .mexp { font-size: 12px; color: var(–text-dim); line-height: 1.5; font-style: italic; }
+
+.action-row { display: flex; gap: 10px; margin-top: 20px; }
+.action-row button { flex: 1; }
+
+.label { font-size: 14px; color: var(–text-dim); margin-bottom: 12px; }
+
+.hidden { display: none !important; }
+</style>
+
+</head>
+<body>
+
+<!-- ═══════════ HOME SCREEN ═══════════ -->
+
+<div id="homeScreen">
+  <div class="header">
+    <div class="tag">NIC Esthetics Exam Prep</div>
+    <h1>KiKi's Study Hub</h1>
+    <p class="sub" id="totalCount"></p>
+  </div>
+  <div class="container">
+    <p class="label">Select chapters to study:</p>
+    <div id="chapterList"></div>
+    <button class="select-all" id="selectAllBtn"></button>
+    <div id="countSection" class="hidden">
+      <p class="label" id="availableLabel"></p>
+      <div class="count-row" id="countRow"></div>
+      <button class="btn-primary" id="startBtn">Start Studying →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ QUIZ SCREEN ═══════════ -->
+
+<div id="quizScreen" class="hidden">
+  <div class="container">
+    <div class="topbar">
+      <button class="exit" id="exitBtn">← Exit</button>
+      <span id="qNumber" style="color:var(--text-dim);font-size:12px"></span>
+      <div class="tally"><span id="tallyRight">✓ 0</span><span class="sep">|</span><span id="tallyWrong">✗ 0</span></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressBar" style="width:0%"></div></div>
+    <div class="chapter-tag" id="quizChapterTag"></div>
+    <div class="question-card"><p id="questionText"></p></div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="explanation hidden" id="explanationBox"></div>
+    <button class="btn-primary hidden" id="nextBtn" style="margin-top:18px">Next Question →</button>
+  </div>
+</div>
+
+<!-- ═══════════ RESULTS SCREEN ═══════════ -->
+
+<div id="resultsScreen" class="hidden">
+  <div class="header">
+    <div class="tag">Quiz Complete</div>
+    <h1>Results</h1>
+  </div>
+  <div class="container">
+    <div class="score-card" id="scoreCard">
+      <div class="score-pct" id="scorePct"></div>
+      <div class="score-detail" id="scoreDetail"></div>
+      <div class="badge" id="scoreBadge"></div>
+      <div class="nic-note">NIC passing threshold: 70%</div>
+    </div>
+    <div id="missedSection"></div>
+    <div class="action-row">
+      <button class="btn-primary" id="retryBtn">Try Again</button>
+      <button class="btn-secondary" id="changeBtn">Change Chapters</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════ QUESTION DATA ═══════════ */
+const chapters = {
+  "Ch 2: Anatomy & Physiology": [
+    { q: "What is the study of the structures of the human body?", a: "Anatomy", options: ["Physiology", "Anatomy", "Histology", "Myology"], exp: "Anatomy is the study of body structures. Physiology is the study of their functions." },
+    { q: "What is the study of the functions and activities performed by the body structures?", a: "Physiology", options: ["Anatomy", "Histology", "Physiology", "Osteology"], exp: "Physiology studies how the body's structures function." },
+    { q: "Cells are the basic units of all:", a: "Living things", options: ["Organs", "Tissues", "Living things", "Systems"], exp: "Cells are the fundamental building blocks of all living organisms." },
+    { q: "What is the process of cell reproduction called?", a: "Mitosis", options: ["Meiosis", "Mitosis", "Metabolism", "Anabolism"], exp: "Mitosis is cell division where a cell reproduces to form two identical daughter cells." },
+    { q: "A collection of similar cells that perform a specific function is called:", a: "Tissue", options: ["Organ", "System", "Tissue", "Membrane"], exp: "Tissues are groups of cells of the same type working together." },
+    { q: "What type of tissue lines the heart, digestive tract, and glands?", a: "Epithelial tissue", options: ["Connective tissue", "Muscle tissue", "Nerve tissue", "Epithelial tissue"], exp: "Epithelial tissue is a protective covering on body surfaces and internal organs." },
+    { q: "What type of tissue supports, protects, and binds together other tissues of the body?", a: "Connective tissue", options: ["Epithelial tissue", "Connective tissue", "Nerve tissue", "Muscle tissue"], exp: "Connective tissue includes bone, cartilage, ligaments, tendons, blood, and fat." },
+    { q: "What type of muscle is NOT controlled voluntarily?", a: "Cardiac muscle", options: ["Skeletal muscle", "Striated muscle", "Cardiac muscle", "Voluntary muscle"], exp: "Cardiac muscle (the heart) and smooth muscle are involuntary." },
+    { q: "The brain and spinal cord make up the:", a: "Central nervous system", options: ["Peripheral nervous system", "Autonomic nervous system", "Central nervous system", "Somatic nervous system"], exp: "The CNS consists of the brain and spinal cord." },
+    { q: "Sensory nerves carry impulses from the:", a: "Sense organs to the brain", options: ["Brain to the muscles", "Spinal cord to the glands", "Sense organs to the brain", "Brain to the skin"], exp: "Sensory (afferent) nerves carry messages from sense receptors to the brain." },
+    { q: "Motor nerves carry impulses from the brain to the:", a: "Muscles", options: ["Sense organs", "Glands only", "Muscles", "Skin only"], exp: "Motor (efferent) nerves carry messages from the brain to the muscles." },
+    { q: "The largest cranial nerve, also called the trifacial or trigeminal nerve, is the:", a: "Fifth cranial nerve", options: ["Seventh cranial nerve", "Eleventh cranial nerve", "Fifth cranial nerve", "Third cranial nerve"], exp: "The fifth cranial nerve (trigeminal) is the largest and has three branches." },
+    { q: "The seventh cranial nerve is also known as the:", a: "Facial nerve", options: ["Trigeminal nerve", "Facial nerve", "Accessory nerve", "Cervical nerve"], exp: "The seventh cranial nerve (facial nerve) controls muscles of facial expression." },
+    { q: "What is the main artery that supplies blood to the head, face, and neck?", a: "Common carotid artery", options: ["Jugular vein", "Common carotid artery", "Subclavian artery", "Aorta"], exp: "The common carotid arteries on each side of the neck supply blood to the head." },
+    { q: "Blood returning to the heart from the head and face flows through the:", a: "Jugular veins", options: ["Carotid arteries", "Jugular veins", "Subclavian veins", "Aorta"], exp: "The jugular veins return deoxygenated blood from the head to the heart." },
+    { q: "What is the primary function of white blood cells?", a: "Fight infection and disease", options: ["Carry oxygen", "Form clots", "Fight infection and disease", "Transport nutrients"], exp: "White blood cells (leukocytes) are part of the immune system." },
+    { q: "Red blood cells are also known as:", a: "Erythrocytes", options: ["Leukocytes", "Thrombocytes", "Erythrocytes", "Platelets"], exp: "Erythrocytes carry oxygen from the lungs to the body cells." },
+    { q: "The muscular system covers, shapes, and supports the:", a: "Skeleton", options: ["Organs", "Skin", "Skeleton", "Nervous system"], exp: "Muscles cover and support the skeletal framework." },
+    { q: "What muscle covers the back of the neck and upper/middle back and rotates the shoulder blade?", a: "Trapezius", options: ["Latissimus dorsi", "Trapezius", "Sternocleidomastoid", "Platysma"], exp: "The trapezius extends from the neck to the middle of the back." },
+    { q: "The broad muscle extending from the chest and shoulder to the side of the chin is the:", a: "Platysma", options: ["Trapezius", "Platysma", "Masseter", "Frontalis"], exp: "The platysma is a thin, broad muscle of the neck region." },
+    { q: "The sternocleidomastoid muscle extends from the collar and chest bones to the:", a: "Temporal bone near the ear", options: ["Shoulder blade", "Lower jaw", "Temporal bone near the ear", "Upper back"], exp: "The SCM rotates and bends the head." },
+    { q: "What is the ring muscle of the eye that enables you to close your eyes?", a: "Orbicularis oculi", options: ["Frontalis", "Orbicularis oculi", "Corrugator", "Procerus"], exp: "The orbicularis oculi is the circular muscle around the eye socket." },
+    { q: "What muscle draws the eyebrow down and wrinkles the forehead vertically?", a: "Corrugator", options: ["Frontalis", "Procerus", "Corrugator", "Orbicularis oculi"], exp: "The corrugator muscle creates vertical lines between the brows (frowning)." },
+    { q: "The occipitalis muscle is located at the:", a: "Back of the skull", options: ["Top of the skull", "Front of the skull", "Side of the skull", "Back of the skull"], exp: "The occipitalis is at the nape area and draws the scalp backward." },
+    { q: "What bone forms the forehead?", a: "Frontal bone", options: ["Parietal bone", "Occipital bone", "Frontal bone", "Temporal bone"], exp: "The frontal bone forms the forehead and the upper part of the eye sockets." },
+    { q: "The two bones that form the sides and crown (top) of the cranium are the:", a: "Parietal bones", options: ["Temporal bones", "Parietal bones", "Frontal bones", "Occipital bones"], exp: "The two parietal bones form the sides and top of the skull." },
+    { q: "What bone forms the lower back of the cranium?", a: "Occipital bone", options: ["Frontal bone", "Temporal bone", "Parietal bone", "Occipital bone"], exp: "The occipital bone forms the lower back portion of the skull." },
+    { q: "The mandible is the:", a: "Lower jawbone", options: ["Upper jawbone", "Cheekbone", "Lower jawbone", "Nose bone"], exp: "The mandible is the largest and strongest bone of the face." }
+  ],
+
+  "Ch 3: Physiology & Histology of the Skin": [
+    { q: "What is the medical branch of science that deals with the study of the skin?", a: "Dermatology", options: ["Histology", "Dermatology", "Physiology", "Anatomy"], exp: "Dermatology is the medical specialty focused on skin, its structure, functions, and diseases." },
+    { q: "A physician who specializes in diseases of the skin is called a:", a: "Dermatologist", options: ["Esthetician", "Oncologist", "Dermatologist", "Histologist"], exp: "A dermatologist is a doctor who treats skin disorders and diseases." },
+    { q: "Healthy skin should be slightly:", a: "Moist, soft, and slightly acidic", options: ["Dry, firm, and alkaline", "Oily, rough, and neutral", "Moist, soft, and slightly acidic", "Tight, smooth, and basic"], exp: "Healthy skin has a slightly acidic pH (4.5\u20135.5) and is soft and slightly moist." },
+    { q: "The outermost layer of the skin is the:", a: "Epidermis", options: ["Dermis", "Hypodermis", "Epidermis", "Subcutis"], exp: "The epidermis is the thin outermost protective layer of the skin." },
+    { q: "The epidermis is also known as the:", a: "Cuticle or scarf skin", options: ["True skin", "Corium", "Cuticle or scarf skin", "Subcutaneous layer"], exp: "The epidermis is sometimes called the cuticle or scarf skin." },
+    { q: "The dermis is also called the:", a: "True skin, corium, or cutis", options: ["Scarf skin", "Cuticle", "Subcutaneous layer", "True skin, corium, or cutis"], exp: "The dermis is the deeper, thicker layer also known as the true skin, corium, or cutis." },
+    { q: "The outermost layer of the epidermis is the:", a: "Stratum corneum", options: ["Stratum granulosum", "Stratum lucidum", "Stratum corneum", "Stratum germinativum"], exp: "The stratum corneum is the outermost layer made of dead, keratinized cells." },
+    { q: "What is the layer of the epidermis also known as the basal cell layer?", a: "Stratum germinativum", options: ["Stratum corneum", "Stratum germinativum", "Stratum spinosum", "Stratum lucidum"], exp: "The stratum germinativum (basal layer) is the deepest epidermis layer where cell mitosis occurs." },
+    { q: "Cells in the stratum germinativum are constantly undergoing:", a: "Mitosis", options: ["Keratinization", "Desquamation", "Mitosis", "Melanization"], exp: "The basal layer actively divides (mitosis) to produce new epidermal cells." },
+    { q: "What is the process by which cells are shed from the stratum corneum?", a: "Desquamation", options: ["Keratinization", "Mitosis", "Desquamation", "Exfoliation"], exp: "Desquamation is the natural shedding of dead skin cells from the surface." },
+    { q: "The fibrous protein that gives skin its strength and flexibility is:", a: "Keratin", options: ["Melanin", "Collagen", "Keratin", "Elastin"], exp: "Keratin is the tough protein that makes up the stratum corneum and protects the skin." },
+    { q: "Melanin is produced by cells called:", a: "Melanocytes", options: ["Keratinocytes", "Fibroblasts", "Melanocytes", "Merkel cells"], exp: "Melanocytes in the basal layer produce melanin, which gives skin its color." },
+    { q: "The dermis contains all of the following EXCEPT:", a: "Stratum corneum cells", options: ["Blood vessels", "Nerve endings", "Stratum corneum cells", "Hair follicles"], exp: "The stratum corneum is the outermost epidermis layer, not part of the dermis." },
+    { q: "The protein that gives skin its firmness is:", a: "Collagen", options: ["Elastin", "Keratin", "Collagen", "Melanin"], exp: "Collagen makes up about 70% of the dermis and gives skin structure and firmness." },
+    { q: "The protein that gives skin its elasticity is:", a: "Elastin", options: ["Collagen", "Keratin", "Melanin", "Elastin"], exp: "Elastin fibers allow skin to stretch and then return to its original shape." },
+    { q: "The subcutaneous layer is also known as the:", a: "Hypodermis", options: ["Dermis", "Epidermis", "Hypodermis", "Corium"], exp: "The subcutaneous tissue (hypodermis) lies below the dermis and contains fat." },
+    { q: "Sudoriferous glands are also known as:", a: "Sweat glands", options: ["Oil glands", "Sweat glands", "Ceruminous glands", "Mammary glands"], exp: "Sudoriferous glands produce sweat to regulate body temperature." },
+    { q: "Sebaceous glands are also known as:", a: "Oil glands", options: ["Sweat glands", "Oil glands", "Apocrine glands", "Eccrine glands"], exp: "Sebaceous glands produce sebum (oil) that lubricates the skin and hair." },
+    { q: "What is the oily substance that lubricates the skin and preserves its softness?", a: "Sebum", options: ["Keratin", "Melanin", "Sebum", "Sweat"], exp: "Sebum is secreted by the sebaceous glands and keeps the skin supple." },
+    { q: "The acid mantle is a protective barrier made of:", a: "Sebum and sweat", options: ["Keratin and collagen", "Melanin and elastin", "Sebum and sweat", "Collagen and elastin"], exp: "The acid mantle is a mix of sebum and perspiration that protects the skin with an acidic pH." },
+    { q: "Eccrine glands are found primarily on the:", a: "Palms and soles", options: ["Underarms only", "Scalp only", "Palms and soles", "Face only"], exp: "Eccrine glands are most abundant on the palms, soles, and forehead." },
+    { q: "Apocrine glands are found mainly in the:", a: "Underarm and genital areas", options: ["Palms and soles", "Forehead", "Underarm and genital areas", "Back and chest"], exp: "Apocrine glands are found in the axillary and genital regions." },
+    { q: "What determines natural skin color?", a: "Melanin, blood flow, and carotene", options: ["Melanin only", "Sun exposure only", "Melanin, blood flow, and carotene", "Keratin and collagen"], exp: "Skin color results from melanin production, blood supply, and carotene in tissues." },
+    { q: "The tiny muscles attached to hair follicles that cause goosebumps are the:", a: "Arrector pili muscles", options: ["Orbicularis muscles", "Arrector pili muscles", "Platysma muscles", "Frontalis muscles"], exp: "Arrector pili muscles contract in cold or fright, pulling hair upright and causing goosebumps." },
+    { q: "Nerve endings that respond to heat, cold, touch, pressure, and pain are called:", a: "Sensory nerve fibers (receptors)", options: ["Motor nerve fibers", "Secretory nerves", "Sensory nerve fibers (receptors)", "Autonomic nerves"], exp: "Sensory nerve endings (receptors) in the skin detect environmental stimuli." },
+    { q: "What is the average pH of skin?", a: "4.5 to 5.5", options: ["6.5 to 7.5", "3.0 to 4.0", "4.5 to 5.5", "7.0 to 8.0"], exp: "Healthy skin has a slightly acidic pH between 4.5 and 5.5." },
+    { q: "The skin on the eyelids is the:", a: "Thinnest skin on the body", options: ["Thickest skin on the body", "Most oily area", "Thinnest skin on the body", "Most elastic area"], exp: "Eyelid skin is the thinnest and most delicate skin on the body." },
+    { q: "UV radiation from the sun is the primary cause of:", a: "Premature aging of the skin", options: ["Acne breakouts", "Excessive oil production", "Premature aging of the skin", "Stretch marks"], exp: "UV exposure causes photoaging, including wrinkles, dark spots, and loss of elasticity." },
+    { q: "What vitamin does the skin produce when exposed to sunlight?", a: "Vitamin D", options: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin E"], exp: "The skin synthesizes vitamin D when exposed to UV-B radiation from sunlight." },
+    { q: "What are the six primary functions of the skin?", a: "Protection, sensation, heat regulation, excretion, secretion, and absorption", options: ["Growth, repair, defense, mobility, storage, color", "Protection, sensation, heat regulation, excretion, secretion, and absorption", "Breathing, digestion, circulation, protection, sensation, movement", "Color, texture, thickness, elasticity, moisture, immunity"], exp: "The skin serves as a barrier, sensory organ, thermoregulator, and excretory/secretory/absorptive organ." }
+  ],
+
+  "Ch 4: Disorders & Diseases of the Skin": [
+    { q: "What is a flat spot or discoloration on the skin that is neither raised nor sunken?", a: "Macule", options: ["Papule", "Macule", "Wheal", "Nodule"], exp: "A macule is a flat, discolored spot like a freckle or flat mole." },
+    { q: "A small elevation on the skin that contains no fluid but may develop pus is called a:", a: "Papule", options: ["Vesicle", "Pustule", "Papule", "Bulla"], exp: "A papule is a small, solid bump with no fluid inside." },
+    { q: "A raised, inflamed papule with a white or yellow center containing pus is a:", a: "Pustule", options: ["Cyst", "Pustule", "Vesicle", "Comedo"], exp: "A pustule is an infected papule with pus visible at its center." },
+    { q: "A large blister containing watery fluid, similar to a vesicle but larger, is a:", a: "Bulla", options: ["Wheal", "Tubercle", "Bulla", "Nodule"], exp: "A bulla is a large blister (over 1 cm), such as a blister from a burn." },
+    { q: "A small blister or sac containing clear fluid is called a:", a: "Vesicle", options: ["Vesicle", "Pustule", "Bulla", "Papule"], exp: "Vesicles are small fluid-filled blisters, as seen in poison ivy." },
+    { q: "An itchy, swollen lesion caused by a blow, insect bite, or allergy is a:", a: "Wheal", options: ["Papule", "Vesicle", "Macule", "Wheal"], exp: "Wheals (hives/urticaria) are raised, itchy swellings from allergic reactions." },
+    { q: "Hives are also known as:", a: "Urticaria", options: ["Eczema", "Urticaria", "Psoriasis", "Erythema"], exp: "Urticaria is the medical term for hives \u2014 itchy wheals from allergic reactions." },
+    { q: "A closed sac containing fluid or matter above or below the skin is a:", a: "Cyst", options: ["Comedo", "Nodule", "Cyst", "Tumor"], exp: "A cyst is an abnormal, closed sac that can be surgically drained." },
+    { q: "Dead cells that form over a wound or blemish during healing are called a:", a: "Crust (scab)", options: ["Scale", "Scar", "Crust (scab)", "Fissure"], exp: "A crust or scab is dried sebum and cells that form to protect a healing wound." },
+    { q: "An accumulation of hardened sebum and skin cells in a follicle is a:", a: "Comedo", options: ["Pustule", "Papule", "Comedo", "Milia"], exp: "A comedo is a plugged follicle \u2014 open (blackhead) or closed (whitehead)." },
+    { q: "The most common and least severe type of skin cancer is:", a: "Basal cell carcinoma", options: ["Melanoma", "Squamous cell carcinoma", "Basal cell carcinoma", "Merkel cell carcinoma"], exp: "Basal cell carcinoma accounts for about 80% of skin cancers and rarely metastasizes." },
+    { q: "The most dangerous type of skin cancer is:", a: "Malignant melanoma", options: ["Basal cell carcinoma", "Squamous cell carcinoma", "Malignant melanoma", "Actinic keratosis"], exp: "Malignant melanoma can metastasize quickly and is the most deadly form of skin cancer." },
+    { q: "The ABCDE rule for melanoma detection stands for:", a: "Asymmetry, Border, Color, Diameter, Evolving", options: ["Acne, Blemish, Cyst, Dermatitis, Eczema", "Asymmetry, Border, Color, Diameter, Evolving", "Allergy, Burn, Cut, Disease, Edema", "Age, Birthmark, Cancer, Diagnosis, Exam"], exp: "ABCDE helps identify suspicious moles: Asymmetry, irregular Border, varied Color, large Diameter, Evolving." },
+    { q: "A precancerous condition caused by sun exposure appearing as rough, scaly patches is:", a: "Actinic keratosis", options: ["Seborrheic keratosis", "Actinic keratosis", "Basal cell carcinoma", "Psoriasis"], exp: "Actinic keratoses are precancerous lesions from chronic UV damage." },
+    { q: "What is the medical term for the chronic inflammatory disorder of the sebaceous glands?", a: "Acne vulgaris", options: ["Rosacea", "Acne vulgaris", "Dermatitis", "Seborrhea"], exp: "Acne vulgaris is the most common form of acne involving pimples, blackheads, and cysts." },
+    { q: "An open comedo is commonly called a:", a: "Blackhead", options: ["Whitehead", "Blackhead", "Pimple", "Milia"], exp: "An open comedo (blackhead) appears dark due to oxidized melanin and sebum, not dirt." },
+    { q: "A closed comedo is commonly called a:", a: "Whitehead", options: ["Blackhead", "Whitehead", "Pustule", "Papule"], exp: "A closed comedo (whitehead) is a follicle plugged with sebum that has not been exposed to air." },
+    { q: "Milia are:", a: "Small whitish bumps from trapped sebum beneath the skin", options: ["Open comedones", "Inflamed pustules", "Small whitish bumps from trapped sebum beneath the skin", "Precancerous lesions"], exp: "Milia are benign keratin-filled cysts that appear as tiny white bumps, often around the eyes." },
+    { q: "Seborrhea is characterized by:", a: "Overproduction of sebum by the sebaceous glands", options: ["Underproduction of melanin", "Overproduction of sebum by the sebaceous glands", "Excessive sweating", "Lack of keratin production"], exp: "Seborrhea is excessive oiliness caused by overactive sebaceous glands." },
+    { q: "Rosacea is characterized by:", a: "Chronic redness and flushing, mainly on cheeks and nose", options: ["Scaly, silvery patches", "Chronic redness and flushing, mainly on cheeks and nose", "Small white bumps around eyes", "Darkened patches of skin"], exp: "Rosacea presents as persistent facial redness, visible blood vessels, and sometimes bumps/pustules." },
+    { q: "What grade of acne includes comedones, some papules/pustules, and mild inflammation?", a: "Grade II", options: ["Grade I", "Grade II", "Grade III", "Grade IV"], exp: "Grade II acne has more comedones plus papules and pustules with moderate inflammation." },
+    { q: "An abnormal brown or wine-colored skin discoloration with a circular or irregular shape is a:", a: "Stain (port-wine stain)", options: ["Macule", "Stain (port-wine stain)", "Tan", "Chloasma"], exp: "Port-wine stains are vascular birthmarks caused by dilated capillaries." },
+    { q: "The condition of abnormal darkened patches of skin, often called the 'mask of pregnancy,' is:", a: "Chloasma (melasma)", options: ["Vitiligo", "Albinism", "Chloasma (melasma)", "Leukoderma"], exp: "Chloasma/melasma causes brown patches on the face, often triggered by hormones or UV." },
+    { q: "Vitiligo is characterized by:", a: "Loss of melanocytes causing white patches", options: ["Excess melanin production", "Loss of melanocytes causing white patches", "Red, scaly patches", "Yellow discoloration"], exp: "Vitiligo is an autoimmune condition where melanocytes are destroyed, leaving white patches." },
+    { q: "Complete absence of melanin pigment in the body is called:", a: "Albinism", options: ["Vitiligo", "Leukoderma", "Albinism", "Hyperpigmentation"], exp: "Albinism is a congenital condition where no melanin is produced anywhere in the body." },
+    { q: "A freckle is technically classified as a:", a: "Macule (lentigines)", options: ["Papule", "Comedo", "Macule (lentigines)", "Vesicle"], exp: "Freckles (lentigines) are small, flat, pigmented macules from melanin concentration." },
+    { q: "Contact dermatitis is caused by:", a: "Substances that irritate or cause an allergic reaction on the skin", options: ["Internal hormonal changes", "Bacterial infection", "Substances that irritate or cause an allergic reaction on the skin", "Fungal overgrowth"], exp: "Contact dermatitis is inflammation from direct contact with an irritant or allergen." },
+    { q: "Eczema is characterized by:", a: "Inflammation, dry patches, blisters, and itching", options: ["Oily skin and blackheads", "Inflammation, dry patches, blisters, and itching", "Silvery scales", "Hair loss"], exp: "Eczema (atopic dermatitis) causes itching, redness, dryness, and sometimes blistering." },
+    { q: "Psoriasis is characterized by:", a: "Red patches covered with silvery-white scales", options: ["Pus-filled blisters", "Red patches covered with silvery-white scales", "Flat brown spots", "Fluid-filled vesicles"], exp: "Psoriasis causes thick, scaly plaques from rapid skin cell turnover." },
+    { q: "An allergic reaction to cosmetics or chemicals may cause:", a: "Allergic contact dermatitis", options: ["Psoriasis", "Rosacea", "Allergic contact dermatitis", "Acne vulgaris"], exp: "Allergic contact dermatitis is an immune response to allergens touching the skin." },
+    { q: "Telangiectasia refers to:", a: "Visible, dilated small blood vessels (broken capillaries)", options: ["Blood clots in veins", "Visible, dilated small blood vessels (broken capillaries)", "Enlarged pores", "Spider moles"], exp: "Telangiectasias are dilated capillaries visible on the skin surface, common on the nose and cheeks." },
+    { q: "A small red blemish caused by a group of dilated capillaries radiating from a central point is a:", a: "Spider naevus (vascular spider)", options: ["Cherry angioma", "Spider naevus (vascular spider)", "Port-wine stain", "Hemangioma"], exp: "A spider naevus has a central arteriole with radiating capillaries resembling a spider." },
+    { q: "A benign, bright red or purple round growth on the skin is a:", a: "Cherry angioma", options: ["Spider naevus", "Cherry angioma", "Melanoma", "Basal cell carcinoma"], exp: "Cherry angiomas are common benign vascular growths, especially after age 30." },
+    { q: "A hypertrophy is:", a: "An abnormal growth or thickening of the skin", options: ["A decrease in skin cells", "An abnormal growth or thickening of the skin", "A loss of pigment", "An open wound"], exp: "Hypertrophy refers to excessive cell growth leading to thickened tissue or growths." },
+    { q: "A flat, irregularly shaped pigmented area that increases in darkness with sun exposure is a:", a: "Lentigo (liver spot / age spot)", options: ["Freckle", "Mole (nevus)", "Lentigo (liver spot / age spot)", "Chloasma"], exp: "Lentigines (age/liver spots) are flat, brown spots from UV exposure, common after age 40." },
+    { q: "A benign, outgrowth of skin that looks like a small flap is a:", a: "Skin tag", options: ["Keloid", "Mole", "Skin tag", "Verruca"], exp: "Skin tags (acrochordons) are small, soft, benign skin growths often found on the neck and underarms." },
+    { q: "A keloid is:", a: "A raised, thick scar from excess collagen during healing", options: ["A flat scar", "A raised, thick scar from excess collagen during healing", "A pus-filled abscess", "A loss of skin pigment"], exp: "Keloids are overgrown scars that extend beyond the original wound boundary." },
+    { q: "A mole is also known as a:", a: "Nevus", options: ["Verruca", "Keratosis", "Nevus", "Papilloma"], exp: "A nevus (mole) is a pigmented growth composed of melanocytes." },
+    { q: "Herpes simplex is characterized by:", a: "Recurring viral fever blisters or cold sores", options: ["Scaly patches", "Recurring viral fever blisters or cold sores", "Ring-shaped rashes", "White patches on skin"], exp: "Herpes simplex causes painful, recurring blisters typically around the mouth (Type 1)." },
+    { q: "Tinea (ringworm) is caused by:", a: "A fungal infection", options: ["A virus", "Bacteria", "A fungal infection", "A parasite"], exp: "Tinea is a contagious fungal infection causing ring-shaped, scaly patches." },
+    { q: "Impetigo is:", a: "A highly contagious bacterial skin infection", options: ["A viral rash", "A fungal infection", "A highly contagious bacterial skin infection", "An autoimmune condition"], exp: "Impetigo is a bacterial infection causing honey-colored crusted sores, common in children." },
+    { q: "Verruca is the medical term for:", a: "Wart", options: ["Mole", "Skin tag", "Blister", "Wart"], exp: "Verrucae (warts) are caused by human papillomavirus (HPV)." },
+    { q: "Conjunctivitis (pink eye) is:", a: "A contagious infection/inflammation of the eye membrane", options: ["A skin rash around the eyes", "A contagious infection/inflammation of the eye membrane", "A condition of dry eyes", "Excess tearing"], exp: "Conjunctivitis is inflammation of the conjunctiva, caused by bacteria, viruses, or allergies." },
+    { q: "Hyperhidrosis is:", a: "Excessive sweating", options: ["Lack of sweating", "Excessive sweating", "Excessive oil production", "Dry skin condition"], exp: "Hyperhidrosis is a condition of excessive perspiration beyond what's needed for thermoregulation." },
+    { q: "Anhidrosis is:", a: "Deficiency or absence of sweat", options: ["Excessive sweating", "Deficiency or absence of sweat", "Excessive oil production", "Overproduction of melanin"], exp: "Anhidrosis is the inability to sweat normally, which can be dangerous in heat." },
+    { q: "Bromhidrosis is:", a: "Foul-smelling perspiration", options: ["Excessive sweating", "Complete lack of sweating", "Foul-smelling perspiration", "Night sweats"], exp: "Bromhidrosis is body odor caused by bacterial breakdown of sweat, mostly from apocrine glands." },
+    { q: "Miliaria rubra (prickly heat) is caused by:", a: "Blocked sweat glands in hot, humid conditions", options: ["Fungal infection", "Blocked sweat glands in hot, humid conditions", "Allergic reaction", "Overactive sebaceous glands"], exp: "Miliaria rubra occurs when sweat ducts become blocked, trapping perspiration under the skin." },
+    { q: "What does contraindication mean in esthetics?", a: "A condition that requires avoiding certain treatments", options: ["A recommended treatment", "A type of skin lesion", "A condition that requires avoiding certain treatments", "A side effect of a product"], exp: "A contraindication is any condition that makes a particular treatment inadvisable." },
+    { q: "Occupational disorders in esthetics are caused by:", a: "Substances encountered in the workplace", options: ["Genetic predisposition", "Substances encountered in the workplace", "Internal diseases", "Poor diet"], exp: "Occupational contact dermatitis can result from repeated exposure to chemicals in salon products." },
+    { q: "What type of skin cancer appears as a shiny, smooth, pearly bump often on the face?", a: "Basal cell carcinoma", options: ["Squamous cell carcinoma", "Malignant melanoma", "Basal cell carcinoma", "Actinic keratosis"], exp: "Basal cell carcinoma often appears as a pearly, waxy bump or flat flesh-colored lesion." },
+    { q: "Sebaceous filaments differ from blackheads because:", a: "They are a natural part of the pore and not a disorder", options: ["They are infected", "They are a natural part of the pore and not a disorder", "They only appear on the body", "They produce more oil"], exp: "Sebaceous filaments are a normal structure in pores that help sebum flow to the surface." }
+  ]
+};
+
+/* ═══════════ STATE ═══════════ */
+let selectedChapters = [];
+let questionCount = "all";
+let questions = [];
+let idx = 0;
+let selected = null;
+let answered = false;
+let score = 0;
+let wrong = 0;
+let missed = [];
+
+const $ = id => document.getElementById(id);
+const chapterNames = Object.keys(chapters);
+const totalQ = Object.values(chapters).flat().length;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ═══════════ RENDER HOME ═══════════ */
+function renderHome() {
+  $("homeScreen").classList.remove("hidden");
+  $("quizScreen").classList.add("hidden");
+  $("resultsScreen").classList.add("hidden");
+
+  $("totalCount").textContent = totalQ + " total questions across " + chapterNames.length + " chapters";
+
+  const list = $("chapterList");
+  list.innerHTML = "";
+  chapterNames.forEach(ch => {
+    const btn = document.createElement("button");
+    btn.className = "chapter-btn" + (selectedChapters.includes(ch) ? " active" : "");
+    btn.innerHTML = '<span>' + ch + '</span><span class="count">' + chapters[ch].length + " Q's</span>";
+    btn.onclick = () => {
+      if (selectedChapters.includes(ch)) selectedChapters = selectedChapters.filter(c => c !== ch);
+      else selectedChapters.push(ch);
+      renderHome();
+    };
+    list.appendChild(btn);
+  });
+
+  $("selectAllBtn").textContent = selectedChapters.length === chapterNames.length ? "Deselect All" : "Select All Chapters";
+  $("selectAllBtn").onclick = () => {
+    selectedChapters = selectedChapters.length === chapterNames.length ? [] : [...chapterNames];
+    renderHome();
+  };
+
+  const totalAvail = selectedChapters.reduce((s, ch) => s + chapters[ch].length, 0);
+
+  if (selectedChapters.length > 0) {
+    $("countSection").classList.remove("hidden");
+    $("availableLabel").textContent = "How many questions? (" + totalAvail + " available)";
+
+    const row = $("countRow");
+    row.innerHTML = "";
+    ["20", "40", "60", "all"].forEach(opt => {
+      const btn = document.createElement("button");
+      const label = opt === "all" ? "All (" + totalAvail + ")" : opt;
+      const disabled = opt !== "all" && parseInt(opt) > totalAvail;
+      btn.className = "count-pill" + (questionCount === opt ? " active" : "");
+      btn.textContent = label;
+      btn.disabled = disabled;
+      btn.onclick = () => { if (!disabled) { questionCount = opt; renderHome(); } };
+      row.appendChild(btn);
+    });
+  } else {
+    $("countSection").classList.add("hidden");
+  }
+}
+
+/* ═══════════ START QUIZ ═══════════ */
+function startQuiz() {
+  let pool = [];
+  selectedChapters.forEach(ch => {
+    pool = pool.concat(chapters[ch].map(q => ({ ...q, chapter: ch })));
+  });
+  let shuffled = shuffle(pool);
+  if (questionCount !== "all") shuffled = shuffled.slice(0, parseInt(questionCount));
+  questions = shuffled.map(q => ({ ...q, options: shuffle(q.options) }));
+  idx = 0; selected = null; answered = false; score = 0; wrong = 0; missed = [];
+
+  $("homeScreen").classList.add("hidden");
+  $("quizScreen").classList.remove("hidden");
+  $("resultsScreen").classList.add("hidden");
+  renderQuestion();
+}
+
+/* ═══════════ RENDER QUESTION ═══════════ */
+function renderQuestion() {
+  const cur = questions[idx];
+  const progress = ((idx + 1) / questions.length) * 100;
+
+  $("qNumber").textContent = (idx + 1) + " / " + questions.length;
+  $("tallyRight").textContent = "\u2713 " + score;
+  $("tallyWrong").textContent = "\u2717 " + wrong;
+  $("progressBar").style.width = progress + "%";
+  $("quizChapterTag").textContent = cur.chapter;
+  $("questionText").textContent = cur.q;
+
+  const optC = $("optionsContainer");
+  optC.innerHTML = "";
+  cur.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.className = "option-btn";
+    btn.textContent = String.fromCharCode(65 + i) + ". " + opt;
+    btn.onclick = () => handleSelect(opt);
+    optC.appendChild(btn);
+  });
+
+  $("explanationBox").classList.add("hidden");
+  $("nextBtn").classList.add("hidden");
+}
+
+function handleSelect(opt) {
+  if (answered) return;
+  selected = opt;
+  answered = true;
+  const cur = questions[idx];
+
+  if (opt === cur.a) score++;
+  else { wrong++; missed.push({ ...cur, userAnswer: opt }); }
+
+  // Highlight options
+  const btns = $("optionsContainer").querySelectorAll(".option-btn");
+  btns.forEach(btn => {
+    btn.disabled = true;
+    const val = btn.textContent.substring(3); // strip "A. "
+    if (val === cur.a) btn.classList.add("correct");
+    else if (val === opt && opt !== cur.a) btn.classList.add("wrong");
+  });
+
+  if (cur.exp) {
+    $("explanationBox").textContent = "\uD83D\uDCA1 " + cur.exp;
+    $("explanationBox").classList.remove("hidden");
+  }
+
+  $("nextBtn").textContent = idx + 1 >= questions.length ? "See Results" : "Next Question \u2192";
+  $("nextBtn").classList.remove("hidden");
+}
+
+function nextQuestion() {
+  if (idx + 1 >= questions.length) {
+    showResults();
+  } else {
+    idx++; selected = null; answered = false;
+    renderQuestion();
+  }
+}
+
+/* ═══════════ RESULTS ═══════════ */
+function showResults() {
+  $("quizScreen").classList.add("hidden");
+  $("resultsScreen").classList.remove("hidden");
+
+  const pct = Math.round((score / questions.length) * 100);
+  const passed = pct >= 70;
+
+  $("scoreCard").className = "score-card " + (passed ? "pass" : "fail");
+  $("scorePct").className = "score-pct " + (passed ? "pass" : "fail");
+  $("scorePct").textContent = pct + "%";
+  $("scoreDetail").textContent = score + " correct out of " + questions.length;
+  $("scoreBadge").className = "badge " + (passed ? "pass" : "fail");
+  $("scoreBadge").textContent = passed ? "PASSING" : "NEEDS REVIEW";
+
+  const sec = $("missedSection");
+  sec.innerHTML = "";
+  if (missed.length > 0) {
+    sec.innerHTML = '<h3 class="review-title">Review Missed (' + missed.length + ')</h3>';
+    missed.forEach(m => {
+      const card = document.createElement("div");
+      card.className = "missed-card";
+      card.innerHTML =
+        '<div class="ch-label">' + m.chapter + '</div>' +
+        '<p class="mq">' + m.q + '</p>' +
+        '<div class="your">Your answer: ' + m.userAnswer + '</div>' +
+        '<div class="correct">Correct answer: ' + m.a + '</div>' +
+        (m.exp ? '<div class="mexp">' + m.exp + '</div>' : '');
+      sec.appendChild(card);
+    });
+  }
+}
+
+function goHome() {
+  selectedChapters = [];
+  questionCount = "all";
+  renderHome();
+}
+
+/* ═══════════ EVENT LISTENERS ═══════════ */
+$("startBtn").onclick = startQuiz;
+$("exitBtn").onclick = goHome;
+$("nextBtn").onclick = nextQuestion;
+$("retryBtn").onclick = startQuiz;
+$("changeBtn").onclick = goHome;
+
+/* ═══════════ INIT ═══════════ */
+renderHome();
+</script>
+
+</body>
+</html>
